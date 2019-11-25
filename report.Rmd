@@ -1,0 +1,57 @@
+---
+title: Signatáři petice Milion chvilek pro demokracii
+output:
+  html_document:
+    df_print: paged
+---
+
+Zdroje dat:
+
+- [podpisy pod peticí "30 let po sametové revoluci demokracie nevzkvétá"](https://www.milionchvilek.cz/podepsali), stažené 25. listopadu 2019 v 16.30
+- [MVČR - Informativní počet občanů v ČR ve všech obcích, v obcích 3. typu a v městských částech](https://www.mvcr.cz/clanek/informativni-pocty-obyvatel-v-obcich.aspx)
+
+# Podíl signatáři/občané starší 15 let v obcích 
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(dplyr)
+tabulka <- read.csv("signatari-2019-11-25-17-55.csv", stringsAsFactors = F)
+obyvatele <- read.csv("obyvatele.csv", stringsAsFactors = F)
+tabulka %>%
+  left_join(obyvatele) %>%
+  group_by(obec, obyv15) %>%
+  summarise(podpisu=n()) %>%
+  mutate(podil=podpisu/obyv15*100) %>%
+  arrange(desc(podil))
+```
+
+Z obcí, které mají víc než tisíc obyvatel, je nejvyšší podíl signatářů v Černošicích, Dobřichovicích, Řevnicích, Tuchoměřicích, Statenicích....
+
+(Data jsme nečistili, proto jsou na konci tabulky všemožné nepřesně zadané názvy obcí.)
+
+# Obce s nejvyšším absolutním počtem podpisů
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+tabulka %>%
+  group_by(obec) %>%
+  summarise(podpisu=n()) %>%
+  arrange(desc(podpisu))
+```
+
+Rozdíly oproti [statistice Milionu chvilek](https://www.milionchvilek.cz/statistiky) jsou způsobené
+
+1. signatáři, kteří zaškrtli, že nechtějí zveřejnit údaje
+2. chybně vyplněnými názvy obcí (provozovatelé petice mají k dispozici PSČ, podle kterých to mohou spárovat přesněji, veřejně dostupná však tato data nejsou)
+
+# Nejčastější povolání
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+tabulka %>%
+  group_by(povolani) %>%
+  summarise(podpisu=n()) %>%
+  arrange(desc(podpisu))
+```
+
+Rozdíly oproti [statistice Milionu chvilek](https://www.milionchvilek.cz/statistiky) jsou způsobené
+
+1. signatáři, kteří zaškrtli, že nechtějí zveřejnit údaje
+2. různě vyplněnými kolonkami povolání (nesjednocovali jsme, nečistili jsme)

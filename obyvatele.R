@@ -8,6 +8,6 @@ obyvatele <- obyvatele %>%
 
 obyvatele <- obyvatele %>%
   group_by(obec) %>%
-  summarise(obvyv15=sum(obyv15))
+  summarise(obyv15=sum(obyv15))
 
-write.csv(obyvatele, "obyvatele.csv")
+write.csv(obyvatele, "obyvatele.csv", row.names = F)

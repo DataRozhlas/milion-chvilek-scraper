@@ -9,5 +9,7 @@ for (i in cisloStranky) {
   print(i)
 }
 
-write.csv(tabulka, "signatari-2019-11-25-16-30.csv")
+names(tabulka) <- c("cislo","jmeno", "obec", "povolani")
+
+write.csv(tabulka, "signatari-2019-11-25-17-55.csv", row.names = F)
 
